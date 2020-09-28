@@ -15,21 +15,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.cdcc.models.FinancialManagementAdjustment;
 import com.cdcc.repository.FinancialManagementAdjustmentRepository;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
 @RestController
 public class FinancialManagementAdjustmentController {
   
   @Autowired
   FinancialManagementAdjustmentRepository financialManagementAdjustmentRepository;
   
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.GET, value="/api/financialManagementAdjustmentData")
   public Iterable<FinancialManagementAdjustment> products() {
-	  System.out.println("GET Method entered");
+
       return financialManagementAdjustmentRepository.findAll();
   }
   
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
+  @RequestMapping(method=RequestMethod.GET, value="/api/financialManagementAdjustmentData/yearQuarter/{year}/{quarter}")
+  public Iterable<FinancialManagementAdjustment> filterByDivision(@PathVariable String year, @PathVariable String quarter) {
+
+      return financialManagementAdjustmentRepository.findByYearAndQuarter(year,quarter);
+  }
+  
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.POST, value="/api/financialManagementAdjustmentData")
   public String save(@RequestBody FinancialManagementAdjustment financialResults) {
 	  financialManagementAdjustmentRepository.save(financialResults);
@@ -37,12 +48,13 @@ public class FinancialManagementAdjustmentController {
       return financialResults.getid();
   }
   
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.GET, value="/api/financialManagementAdjustmentData/{id}")
-  @CrossOrigin(origins = "http://localhost:3000")
   public Optional<FinancialManagementAdjustment> show(@PathVariable String id) {
       return financialManagementAdjustmentRepository.findById(id);
   }
 
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.PUT, value="/api/financialManagementAdjustmentData/{id}")
   public FinancialManagementAdjustment update(@PathVariable String id, @RequestBody FinancialManagementAdjustment financialResultsValue) {
 	  Optional<FinancialManagementAdjustment> financialResultData = financialManagementAdjustmentRepository.findById(id);
@@ -65,6 +77,7 @@ public class FinancialManagementAdjustmentController {
       return financialManagementAdjustmentRepository.save(financialResultsValue);
   }
 
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.DELETE, value="/api/financialManagementAdjustment/{id}")
   public String delete(@PathVariable String id) {
       Optional<FinancialManagementAdjustment> product = financialManagementAdjustmentRepository.findById(id);

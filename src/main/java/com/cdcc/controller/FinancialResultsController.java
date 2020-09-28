@@ -1,6 +1,7 @@
 package com.cdcc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,21 +15,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.cdcc.models.FinancialDataResults;
 import com.cdcc.repository.FinancialResultsRepository;
 
+import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
 @RestController
 public class FinancialResultsController {
   
   @Autowired
   FinancialResultsRepository financialResultsRepository;
   
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.GET, value="/api/financialResultsData")
   public Iterable<FinancialDataResults> product() {
 	  System.out.println("GET Method entered");
       return financialResultsRepository.findAll();
   }
   
+  
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.POST, value="/api/financialResultsData")
   public String save(@RequestBody FinancialDataResults financialResults) {
 	  financialResultsRepository.save(financialResults);
@@ -36,12 +41,19 @@ public class FinancialResultsController {
       return financialResults.get_id();
   }
   
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.GET, value="/api/financialResultsData/{id}")
-  @CrossOrigin(origins = "http://localhost:3000")
   public Optional<FinancialDataResults> show(@PathVariable String id) {
       return financialResultsRepository.findById(id);
   }
   
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
+  @RequestMapping(method=RequestMethod.GET, value="/api/financialResultsData/division/{division}")
+  public Iterable<FinancialDataResults> filterByDivision(@PathVariable String division) {
+      return financialResultsRepository.findByDivision(division);
+  }
+  
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.PUT, value="/api/financialResultsData/{id}")
   public FinancialDataResults update(@PathVariable String id, @RequestBody FinancialDataResults financialResultsValue) {
       Optional<FinancialDataResults> financialResultData = financialResultsRepository.findById(id);
@@ -81,6 +93,7 @@ public class FinancialResultsController {
       return financialResultData.get();
   }
 
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.DELETE, value="/api/financialResultsData/{id}")
   public String delete(@PathVariable String id) {
       Optional<FinancialDataResults> product = financialResultsRepository.findById(id);

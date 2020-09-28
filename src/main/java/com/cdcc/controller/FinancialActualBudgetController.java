@@ -16,19 +16,21 @@ import com.cdcc.repository.FinancialActualBudgetRepository;
 
 import java.util.Optional;
 
+@CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
 @RestController
 public class FinancialActualBudgetController {
   
   @Autowired
   FinancialActualBudgetRepository financialActualBudgetRepository;
   
-  @CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.GET, value="/api/financialActualBudgetData")
   public Iterable<FinancialDataActualBudget> products() {
 	  System.out.println("GET Method entered");
       return financialActualBudgetRepository.findAll();
   }
   
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.POST, value="/api/financialActualBudgetData")
   public String save(@RequestBody FinancialDataActualBudget financialResults) {
 	  financialActualBudgetRepository.save(financialResults);
@@ -36,12 +38,13 @@ public class FinancialActualBudgetController {
       return financialResults.get_id();
   }
   
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.GET, value="/api/financialActualBudgetData/{id}")
-  @CrossOrigin(origins = "http://localhost:3000")
   public Optional<FinancialDataActualBudget> show(@PathVariable String id) {
       return financialActualBudgetRepository.findById(id);
   }
   
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.PUT, value="/api/financialActualBudgetData/{id}")
   public FinancialDataActualBudget update(@PathVariable String id, @RequestBody FinancialDataActualBudget financialResultsValue) {
       Optional<FinancialDataActualBudget> financialResultData = financialActualBudgetRepository.findById(id);
@@ -84,6 +87,7 @@ public class FinancialActualBudgetController {
       return financialResultData.get();
   }
 
+  @CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
   @RequestMapping(method=RequestMethod.DELETE, value="/api/financialActualBudgetData/{id}")
   public String delete(@PathVariable String id) {
       Optional<FinancialDataActualBudget> product = financialActualBudgetRepository.findById(id);

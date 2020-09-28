@@ -40,6 +40,7 @@ import io.jsonwebtoken.Jwts;
 
 import com.cdcc.azure.AzureADUtils;
 
+@CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -60,7 +61,6 @@ public class AuthController {
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity login(@RequestBody AuthBody data) {
     	Map<Object, Object> model = new HashMap<>();
     	System.out.println("Controller entered");
@@ -80,20 +80,17 @@ public class AuthController {
         	    	Map<String, Object> mapTokenComponents = getTokenValues.getTokenComponents(bearerTokenValue);
         	    	tokenHeader = (Map<String, Object>) mapTokenComponents.get("header");
         	    	tokenBody = (Map<String, Object>) mapTokenComponents.get("body");
-        	    	System.out.println("TokenHeader: " + tokenHeader);
         	    	signatureJws = (String) mapTokenComponents.get("signature");
         	    	
         	    	//(2) GET OPENID CONFIGURATIONS AND SELECT THE MACHING KEY BEAN
                     String keysUrl = "https://login.microsoftonline.com/common/discovery/keys";
                     KeyBean keyBeanForAccess = null;
                     for (KeyBean keyBean : getTokenValues.discoveryKeys(keysUrl).getKeys()) {
-                    	System.out.println("Key Bean: " + keyBean.getKid() + "tokenHeader: " + tokenHeader.get("kid"));
                         if (keyBean.getKid().equals((String) tokenHeader.get("kid"))) {
                             keyBeanForAccess = keyBean;
                             break;
                         }
                     }
-        	    	System.out.println("Key Bean For Access: " + keyBeanForAccess.getX5c());
         	    	
         	    	//(3) VALIDATE THE JWT CLAIMS
                     PublicKey pubKeyNew = null;
@@ -132,7 +129,6 @@ public class AuthController {
         	                sig.initVerify(pubKeyNew);
         	                sig.update(bearerTokenValue.getBytes());
         	                boolean newCheck = sig.verify(signature);
-        	                System.out.println("Check Value: " + newCheck);
         	            } catch (Exception e) {
         	                throw new TokenException(500, "Invalid signature: " + e.getMessage());
         	            }
@@ -149,7 +145,6 @@ public class AuthController {
         			List<Object> strList = Arrays.asList(tokenBody.get("roles"));
         			List<Object> role = (List<Object>) strList.get(0);
         			String finalRole = (String) role.get(0);
-        			System.out.println(role.get(0));
         			String token = jwtTokenProvider.createTokenSingleSignOn((String) tokenBody.get("preferred_username"), finalRole, claims);
 	        		model.put("username", (String) tokenBody.get("preferred_username"));
 		            model.put("token", token);
