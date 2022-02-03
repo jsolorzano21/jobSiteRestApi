@@ -42,9 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.httpBasic().disable().csrf().disable().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/api/financialUserInformation").permitAll().antMatchers("/api/financialUpdateQuarterData").permitAll()
-				.antMatchers("/api/financialActualRevenue").permitAll()
+				.antMatchers("/api/financialActualRevenue").permitAll().antMatchers("/api/projectSiteListInformation").permitAll()
 				.antMatchers("/api/financialDivisions").permitAll().antMatchers("/api/financialYearlyQuarterLabel").permitAll()
 				.antMatchers("/api/financialActualBudgetData").permitAll().antMatchers("/api/financialResultsData/").permitAll()
+				.antMatchers("/api/projectSiteListInformation/liveViewLogin/*").permitAll().antMatchers("/api/projectSiteListUpdateItem/*").permitAll()
+				.antMatchers("/api/projectSiteListPublishItem/*").permitAll()
 				.antMatchers("/api/financialResultsData/division/*").permitAll().antMatchers("/api/financialUpdateQuarterData/*").permitAll()
 				.antMatchers("/api/financialManagementAdjustmentData/yearQuarter/*/*").permitAll().antMatchers("/api/financialUpdateYearThreeReportExecAdj").permitAll()
 				.antMatchers("/api/financialUpdateYearThreeReportExecAdj/*").permitAll().antMatchers("/api/financialManagementAdjustmentData").permitAll()
@@ -57,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"));
+		config.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com", "https://projectadmin.carrolldaniel.com"));
 		config.setAllowedHeaders(Arrays.asList("Content-Type","Origin","*"));
 		config.setAllowedMethods(Arrays.asList("Get","put","post","delete"));
 		config.setAllowCredentials(true);

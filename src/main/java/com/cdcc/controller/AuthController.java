@@ -40,12 +40,14 @@ import io.jsonwebtoken.Jwts;
 
 import com.cdcc.azure.AzureADUtils;
 
-@CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://carroll-daniel-finance.azurewebsites.net","https://finance.carrolldaniel.com","https://projectadmin.carrolldaniel.com"})
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 	
 	private static final Object APPLICATION_ID = "9ae0c120-eeca-4069-a6e1-cfc84629aa2b";
+	private static final Object APPLICATION_ID_2 = "aa2f2910-4d54-43a4-8f2b-69e5e8e9067a";
+
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -118,7 +120,7 @@ public class AuthController {
                         throw new TokenException(500, "Invalid claims: " + e.getMessage());
                     }
         			
-        			  if (claims == null || !APPLICATION_ID.equals(claims.getAudience())) { throw
+        			  if (claims == null || !APPLICATION_ID.equals(claims.getAudience()) || !APPLICATION_ID_2.equals(claims.getAudience())) { throw
         			  new TokenException(500, "Invalid audience claim"); }
         			 
         			//(4) VERIFY SIGNATURE	    	

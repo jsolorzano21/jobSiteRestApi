@@ -48,6 +48,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenProvider {
 	private static final Object APPLICATION_ID = "9ae0c120-eeca-4069-a6e1-cfc84629aa2b";
+	private static final Object APPLICATION_ID_2 = "aa2f2910-4d54-43a4-8f2b-69e5e8e9067a";
 
 	@Value("${security.jwt.token.secret-key:secret}")
 	private String secretKey = "secret";
@@ -124,6 +125,8 @@ public class JwtTokenProvider {
     	String bearerTokenValue = "";
 		String bearerToken = req.getHeader("Authorization");
 	    System.out.println("Token Value: " + bearerToken);
+        System.out.println("Joanie Solorzano");
+
 	    if(bearerToken != null && bearerToken.startsWith("Mstoken ")) { 
 	    	try {
 	    	Map<String, Object> tokenHeader = new HashMap<String, Object>();
@@ -171,13 +174,16 @@ public class JwtTokenProvider {
                         .parseClaimsJws(bearerTokenValue).getBody();
                 System.out.println("Expiration Date:: " + claims.getExpiration().toString());
                 System.out.println("Issued Date:: " + claims.getIssuedAt().toString());
+                System.out.println("Joanie Solorzano");
                 System.out.println("Issuer:: " + claims.getIssuer());
                 System.out.println("Audience:: " + claims.getAudience());
+                System.out.println("Joanie Solorzano");
             } catch (Exception e) {
                 throw new TokenException(500, "Invalid claims: " + e.getMessage());
             }
 			
-			  if (claims == null || !APPLICATION_ID.equals(claims.getAudience())) { throw
+            System.out.println("Joanie Solorzano");
+			  if (claims == null || !APPLICATION_ID.equals(claims.getAudience()) && !APPLICATION_ID_2.equals(claims.getAudience())) { throw
 			  new TokenException(500, "Invalid audience claim"); }
 			 
 			//(4) VERIFY SIGNATURE	    	

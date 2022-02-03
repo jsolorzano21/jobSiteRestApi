@@ -69,6 +69,7 @@ public class AzureADUtils {
     }
 	
 	public OpenIdKeysBean discoveryKeys(String keysURL) {
+		System.out.println("AuthController discoveryKeys method");
         URL url;
         OpenIdKeysBean openIdKeysBean = new OpenIdKeysBean();
         try {
@@ -99,6 +100,7 @@ public class AzureADUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+		System.out.println("AuthController discoveryKeys method completed");
         return openIdKeysBean;
     }
 
